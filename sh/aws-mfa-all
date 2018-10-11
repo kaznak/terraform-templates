@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -Cu
+
+based=$(dirname $0)/..
+pname=$(basename $0)
+stime=$(date +%Y%m%d%H%M%S%Z)
+
+exec 3>&2
+# logd=$based/log
+# exec 3>&2 2>$logd/$pname.$stime.$$.log
+# set -vx
+
+MSG() {
+    echo "$pname $stime $(date +%Y%m%d%H%M%S%Z) $@"	>&3
+}
+
+tmpd=$(mktemp -d --suffix=".$pname.$stime.$$")/
+if [ 0 -ne "$?" ] ; then
+    MSG FATAL can not make temporally directory.
+    exit 1
+fi
+
+trap 'BEFORE_EXIT' EXIT
+BEFORE_EXIT()	{
+    rm -rf $tmpd
+}
+
+IS_ERROR() {
+    echo ${PIPESTATUS[@]}	|
+	tr ' \t' '\n'	|
+	grep -qv '^0$'
+}
+################################################################
+
+aws-mfa --profile sample-profile
+IS_ERROR && MSG ERROR while getting following credential: sample-profile  && exit 1
+
+################################################################
+exit 0
