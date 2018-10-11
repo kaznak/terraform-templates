@@ -1,0 +1,27 @@
+# -*- mode: gitignore; -*-
+
+### gitignore https://github.com/github/gitignore
+
+### * git
+### ** private files
+nogit_*
+*_nogit
+
+### * Editors
+### ** Emacs 
+*~
+\#*\#
+.\#*
+
+### ** Vi
+*.swp
+
+### * terraform
+.terraform
+*.tfstate*
+
+# * python
+*.pyc
+
+# * ssh
+known_hosts
