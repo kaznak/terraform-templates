@@ -35,7 +35,53 @@ resource "aws_instance" "main" {
   # To remote-exec provisioner work, "associate_public_ip_address" is required.
   associate_public_ip_address = true
 
+  iam_instance_profile = "${aws_iam_instance_profile.CloudWatchAgentServerPolicy.name}"
+
   key_name = "${aws_key_pair.main.key_name}"
+
+  user_data = <<SHELL
+set -vxe
+# set hostname
+sudo hostnamectl set-hostname ${var.ProjectName}-${count.index}-$(date +%Y%m%d%H%M%S%Z)
+
+# install setup tools
+sudo apt update
+sudo apt update
+sudo unattended-upgrade
+sudo apt install -y python expect
+
+# install cloudwatch logs agent
+curl https://s3.amazonaws.com//aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
+sudo expect	<<"EOS"
+set timeout 3600
+
+spawn python ./awslogs-agent-setup.py --region us-east-1
+
+expect "AWS Access Key ID"		{ send   "\n" }
+expect "AWS Secret Access Key"		{ send   "\n" }
+expect "Default region name"		{ send   "us-east-1\n" }
+expect "Default output format"		{ send   "\n" }
+expect "Path of log file to upload"	{ send   "/var/log/syslog\n" }
+expect "Destination Log Group name"	{ send   "${var.ProjectName}/var/log/syslog\n" }
+expect "Choose Log Stream name"
+# 1. Use EC2 instance id.
+expect "Enter choice"			{ send   "1\n" }
+expect "Choose Log Event timestamp format"
+# 1. %b %d %H:%M:%S    (Dec 31 23:59:59)
+expect "Enter choice"			{ send   "1\n" }
+expect "Choose initial position of upload"
+# 1. From start of file.
+expect "Enter choice"			{ send   "1\n" }
+# From start of file.
+expect "More log files to configure?"
+send   "N\n"
+expect { "*" { exp_continue } }
+wait
+EOS
+# Start Services
+sudo systemctl start awslogs
+sudo systemctl enable awslogs
+SHELL
 
   provisioner "remote-exec" {
     connection {
@@ -45,7 +91,7 @@ resource "aws_instance" "main" {
     }
 
     inline = [
-      "sudo hostnamectl set-hostname ${var.ProjectName}-${count.index}-$(date +%Y%m%d%H%M%S%Z)",
+      "curl http://169.254.169.254/latest/user-data | bash",
     ]
   }
 
