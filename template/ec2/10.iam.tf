@@ -12,19 +12,21 @@ resource "aws_iam_instance_profile" "CloudWatchAgentServerPolicy" {
 }
 
 resource "aws_iam_role" "CloudWatchAgentServerPolicy" {
-  name        = "CloudWatchAgentServerPolicy"
-  path        = "/"
-  description = "CloudWatchAgentServerPolicy"
+  name               = "CloudWatchAgentServerPolicy"
+  path               = "/"
+  description        = "CloudWatchAgentServerPolicy"
   assume_role_policy = "${data.aws_iam_policy_document.CloudWatchAgentServerPolicy.json}"
 }
 
 data "aws_iam_policy_document" "CloudWatchAgentServerPolicy" {
   statement {
     effect = "Allow"
+
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
+
     actions = ["sts:AssumeRole"]
   }
 }

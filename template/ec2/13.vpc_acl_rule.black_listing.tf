@@ -11,13 +11,13 @@ resource "aws_network_acl_rule" "i_d_http" {
   # description = "Ingress Denynetwork http"
 
   network_acl_id = "${aws_network_acl.public.id}"
-  rule_number = "${310 + count.index}"
-  egress      = false
-  protocol    = "tcp"
-  rule_action = "deny"
-  cidr_block  = "${var.Deny_Networks[count.index]}"
-  from_port   = 80
-  to_port     = 80
+  rule_number    = "${310 + count.index}"
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "deny"
+  cidr_block     = "${var.Deny_Networks[count.index]}"
+  from_port      = 80
+  to_port        = 80
 }
 
 resource "aws_network_acl_rule" "i_g_http" {
@@ -40,13 +40,13 @@ resource "aws_network_acl_rule" "i_d_https" {
   # description = "Ingress Denynetwork https"
 
   network_acl_id = "${aws_network_acl.public.id}"
-  rule_number = "${410 + count.index}"
-  egress      = false
-  protocol    = "tcp"
-  rule_action = "deny"
-  cidr_block  = "${var.Deny_Networks[count.index]}"
-  from_port   = 443
-  to_port     = 443
+  rule_number    = "${410 + count.index}"
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "deny"
+  cidr_block     = "${var.Deny_Networks[count.index]}"
+  from_port      = 443
+  to_port        = 443
 }
 
 resource "aws_network_acl_rule" "i_g_https" {

@@ -51,13 +51,13 @@ resource "aws_network_acl_rule" "i_a_ssh" {
   # description = "Egress Allownetwork SSH"
 
   network_acl_id = "${aws_network_acl.public.id}"
-  rule_number = "${210 + count.index}"
-  egress      = false
-  protocol    = "tcp"
-  rule_action = "allow"
-  cidr_block  = "${var.Allow_Networks[count.index]}"
-  from_port   = 22
-  to_port     = 22
+  rule_number    = "${210 + count.index}"
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "${var.Allow_Networks[count.index]}"
+  from_port      = 22
+  to_port        = 22
 }
 
 ## ephemeral
