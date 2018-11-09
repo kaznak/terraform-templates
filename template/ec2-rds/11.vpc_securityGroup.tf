@@ -3,8 +3,9 @@
 # # https://www.terraform.io/docs/providers/aws/r/security_group.html
 
 resource "aws_security_group" "i_l_all" {
-  name   = "${var.ProjectName}_i_l_all"
-  vpc_id = "${aws_vpc.main.id}"
+  name        = "${var.ProjectName}_i_l_all"
+  vpc_id      = "${aws_vpc.main.id}"
+  description = "Ingress Localnetwork All"
 
   ingress {
     protocol    = "-1"
@@ -17,8 +18,9 @@ resource "aws_security_group" "i_l_all" {
 }
 
 resource "aws_security_group" "e_g_all" {
-  name   = "${var.ProjectName}_e_g_all"
-  vpc_id = "${aws_vpc.main.id}"
+  name        = "${var.ProjectName}_e_g_all"
+  vpc_id      = "${aws_vpc.main.id}"
+  description = "Egress Globalnetwork All"
 
   egress {
     protocol    = "-1"
@@ -31,8 +33,9 @@ resource "aws_security_group" "e_g_all" {
 }
 
 resource "aws_security_group" "i_a_www" {
-  name   = "${var.ProjectName}_i_a_www"
-  vpc_id = "${aws_vpc.main.id}"
+  name        = "${var.ProjectName}_i_a_www"
+  vpc_id      = "${aws_vpc.main.id}"
+  description = "Ingress Allownetwork WWW"
 
   ingress {
     protocol    = "tcp"
@@ -52,8 +55,9 @@ resource "aws_security_group" "i_a_www" {
 }
 
 resource "aws_security_group" "i_g_www" {
-  name   = "${var.ProjectName}_i_g_www"
-  vpc_id = "${aws_vpc.main.id}"
+  name        = "${var.ProjectName}_i_g_www"
+  vpc_id      = "${aws_vpc.main.id}"
+  description = "Ingress Globalnetwork WWW"
 
   ingress {
     protocol    = "tcp"
@@ -73,8 +77,9 @@ resource "aws_security_group" "i_g_www" {
 }
 
 resource "aws_security_group" "i_a_ssh" {
-  name   = "${var.ProjectName}_i_a_ssh"
-  vpc_id = "${aws_vpc.main.id}"
+  name        = "${var.ProjectName}_i_a_ssh"
+  vpc_id      = "${aws_vpc.main.id}"
+  description = "Ingress Allownetwork ssh"
 
   ingress {
     protocol    = "tcp"
