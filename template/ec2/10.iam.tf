@@ -7,12 +7,12 @@
 # https://www.terraform.io/docs/providers/aws/r/iam_instance_profile.html
 
 resource "aws_iam_instance_profile" "CloudWatchAgentServerPolicy" {
-  name = "CloudWatchAgentServerPolicy"
+  name = "${var.ProjectName}_CloudWatchAgentServerPolicy"
   role = "${aws_iam_role.CloudWatchAgentServerPolicy.name}"
 }
 
 resource "aws_iam_role" "CloudWatchAgentServerPolicy" {
-  name               = "CloudWatchAgentServerPolicy"
+  name               = "${var.ProjectName}_CloudWatchAgentServerPolicy"
   path               = "/"
   description        = "CloudWatchAgentServerPolicy"
   assume_role_policy = "${data.aws_iam_policy_document.CloudWatchAgentServerPolicy.json}"
