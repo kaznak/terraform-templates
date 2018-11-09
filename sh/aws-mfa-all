@@ -33,8 +33,9 @@ IS_ERROR() {
 }
 ################################################################
 
-aws-mfa --profile sample-profile
-IS_ERROR && MSG ERROR while getting following credential: sample-profile  && exit 1
+credential=sample-profile
+aws-mfa --profile $credential
+IS_ERROR && MSG ERROR while getting following credential: $credential  && exit 1
 
 ################################################################
 exit 0
